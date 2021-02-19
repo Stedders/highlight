@@ -9,6 +9,8 @@ unicode-slugify = "*"
 watchdog = "*"
 jinja2 = "*"
 markdown = "*"
+click = "*"
+click-default-group = "*"
 
 [dev-packages]
 

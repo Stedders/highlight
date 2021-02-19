@@ -1,35 +1,56 @@
+"""Command line interface to compile/run the static site"""
 # Tutorial
 # https://blog.naveeraashraf.com/posts/make-static-site-generator-with-python-2/
 import os
-import sys
-from app.load import get_global
-from app.write import generate_site
-from app.server import run
+
+import click
+from click_default_group import DefaultGroup
 from app.helpers import tailwind_os
+from app.load import get_global
+from app.server import run
+from app.write import generate_site
 
-site = get_global()
 
-if not os.path.exists('site'):
-    os.mkdir('site')
+@click.group(cls=DefaultGroup, default='compile', default_if_no_args=True)
+@click.pass_context
+def cli(ctx):
+    if not os.path.exists('site'):
+        os.mkdir('site')
+    ctx.obj = {'site': get_global()}
 
-# Set global variables, prepare compile
-if 'compile' in sys.argv:
-    site = get_global(compile=True)
+
+@cli.command()
+@click.option('--compile-site/--no-compile-site', default=True)
+@click.option('--tailwind-compile/--no-tailwind-compile', default=True)
+@click.pass_context
+def compile(ctx, compile_site, tailwind_compile):
+    """Compiles site [default]"""
+    site = get_global(compile=compile_site)
     generate_site(site)
-    os.system(tailwind_os('compile'))
-elif 'dev' in sys.argv:
-    # Generate HTML site
+    os.system(tailwind_os(compile=tailwind_compile))
+
+
+@cli.command()
+@click.pass_context
+def dev(ctx):
+    site = ctx.obj['site']
     generate_site(site, False)
-elif not 'server' in sys.argv:
-    # Generate HTML site
-    generate_site(site)
-    os.system(tailwind_os())
 
-# Run dev server with full Tailwind CSS
-if 'server' in sys.argv:
-    os.system(tailwind_os())
+
+@cli.command()
+@click.pass_context
+def server(ctx):
+    """Runs a local web server to host the site"""
+    os.system(tailwind_os(False))
     run()
 
-# Watch for changes
-if 'watch' in sys.argv:
+
+@cli.command()
+@click.pass_context
+def watch(ctx):
+    """Watches the src and rebuilds the site as changes are made"""
     exec(open("./app/watch.py").read())
+
+
+if __name__ == "__main__":
+    cli()
