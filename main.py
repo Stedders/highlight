@@ -5,6 +5,7 @@ import os
 
 import click
 from click_default_group import DefaultGroup
+
 from app.helpers import tailwind_os
 from app.load import get_global
 from app.server import run
@@ -25,7 +26,7 @@ def cli(ctx):
 @click.pass_context
 def compile(ctx, compile_site, tailwind_compile):
     """Compiles site [default]"""
-    site = get_global(compile=compile_site)
+    site = get_global(compile=compile_site, local=True)
     generate_site(site)
     os.system(tailwind_os(compile=tailwind_compile))
 

@@ -7,7 +7,7 @@ except ImportError:
 from app.helpers import set_gravatar, load_pages, load_roles
 
 
-def get_global(compile=False):
+def get_global(compile=False, local=False):
     # Get person information
     with open('resume/about.yaml', 'r') as about_file:
         about = load(about_file, Loader=Loader)
@@ -40,6 +40,7 @@ def get_global(compile=False):
     with open('config.yaml', 'r') as config:
         settings = load(config, Loader=Loader)
     settings['cname'] = settings['url']
+    settings['local'] = local
     if compile == False:
         settings['url'] = 'http://localhost:4242'
     # Get pages for navigation

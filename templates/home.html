@@ -14,7 +14,13 @@
     <ul>
     {% for r in site.roles %}
       {% set role = site.roles[r] %}
-      <li class="mb-3 font-bold"><a href="{{ role.slug }}" class="underline transition-all text-blue-800	hover:text-blue-600 duration-500">{{ role.role }}</a></li>
+      <li class="mb-3 font-bold">
+        {% if site.local %}
+          <a href="{{ role.slug + '.html'}}" class="underline transition-all text-blue-800	hover:text-blue-600 duration-500">{{ role.role }}</a>
+        {% else %}
+          <a href="{{ role.slug }}" class="underline transition-all text-blue-800	hover:text-blue-600 duration-500">{{ role.role }}</a><
+        {% endif %}
+      </li>
     {% endfor %}
     </ul>
 
