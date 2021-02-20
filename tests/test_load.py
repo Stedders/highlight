@@ -22,3 +22,8 @@ def test_load_ft():
 def test_load_tt():
     site = load.get_global(True, True)
     assert site == json.load(open('tests/test_results/test_load_tt.json', 'r'))
+
+
+def test_load_custom_exceptions():
+    site = load.get_global(about_file='tests/etc/example_about.yaml')
+    assert site == json.load(open('tests/test_results/test_load_custom_exceptions.json', 'r'))

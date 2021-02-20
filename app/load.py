@@ -11,13 +11,15 @@ from app.helpers import set_gravatar, load_pages, load_roles
 ICON_CLASS = '<i class="fas fa-globe"></i>'
 
 
-def get_settings(compile_site: bool, local: bool) -> Dict[str, Union[str, bool, int]]:
+def get_settings(
+    compile_site: bool, local: bool, settings_file: str
+) -> Dict[str, Union[str, bool, int]]:
     """
     Gets the site setting from config.yaml
 
     :return: Dictionary containing information to drive the creation of the static type
     """
-    settings = load(open("config.yaml"), Loader=Loader)
+    settings = load(open(settings_file), Loader=Loader)
     settings["cname"] = settings["url"]
     settings["local"] = local
     settings["avatar_default"] = settings.get(
@@ -29,8 +31,13 @@ def get_settings(compile_site: bool, local: bool) -> Dict[str, Union[str, bool, 
     return settings
 
 
-def get_global(compile_site=False, local=False, about_file="resume/about.yaml"):
-    settings = get_settings(compile_site, local)
+def get_global(
+    compile_site=False,
+    local=False,
+    settings_file="config.yaml",
+    about_file="resume/about.yaml",
+):
+    settings = get_settings(compile_site, local, settings_file)
 
     # Load can take the open file handle, read is default mode
     about = load(open(about_file), Loader=Loader)
@@ -49,7 +56,7 @@ def get_global(compile_site=False, local=False, about_file="resume/about.yaml"):
         if isinstance(all_links[link], dict):
             fresh_link = all_links[link]
 
-            # If it doesn't exists, returns false and sets default
+            # If it doesn't exists, returns false and set default
             if not fresh_link.get("text", False):
                 fresh_link["text"] = fresh_link["url"]
 
