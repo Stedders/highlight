@@ -4,15 +4,16 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyyaml = "*"
+PyYAML = "*"
 unicode-slugify = "*"
 watchdog = "*"
-jinja2 = "*"
-markdown = "*"
+Jinja2 = "*"
+Markdown = "*"
 click = "*"
 click-default-group = "*"
 
 [dev-packages]
+pytest = "*"
 
 [requires]
 python_version = "3.8"

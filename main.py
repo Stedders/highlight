@@ -15,6 +15,7 @@ from app.write import generate_site
 @click.group(cls=DefaultGroup, default='compile', default_if_no_args=True)
 @click.pass_context
 def cli(ctx):
+    """Command line grouping, handling common functions."""
     if not os.path.exists('site'):
         os.mkdir('site')
     ctx.obj = {'site': get_global()}
