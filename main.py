@@ -27,7 +27,7 @@ def cli(ctx):
 @click.pass_context
 def compile(ctx, compile_site, tailwind_compile):
     """Compiles site [default]"""
-    site = get_global(compile=compile_site, local=True)
+    site = get_global(compile_site=compile_site, local=True)
     generate_site(site)
     os.system(tailwind_os(compile=tailwind_compile))
 
